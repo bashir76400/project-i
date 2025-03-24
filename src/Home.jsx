@@ -22,8 +22,8 @@ export default function Home(){
             <p className="text-center mt-10 text-slate-600 text-[20px]">HudumaVoice is a cutting-edge AI assistant designed to offer human-like voice<br/> conversations, extensive knowledge, and multilingual support.</p>
 
             <div className="flex space-x-6 justify-center mt-20">
-                <button className="border bg-[#0257F6] text-white rounded-full font-medium px-10 py-4 hover:cursor-pointer">Book a demo</button>
-                <button className="border bg-black text-white rounded-full border-black font-medium px-10 py-4 hover:cursor-pointer" onClick={navigateToLogin}>Get Started</button>
+                <button className="border bg-[#0257F6] text-white rounded-full font-medium px-10 py-4 hover:cursor-pointer">Get Started</button>
+                <button className="border bg-black text-white rounded-full border-black font-medium px-10 py-4 hover:cursor-pointer" onClick={navigateToLogin}>Book a Demo</button>
             </div>
         </div>
         <div className="w-[28.5%] flex flex-col mt-[280px]">

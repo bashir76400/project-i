@@ -14,7 +14,7 @@ export default function Links(){
                 <p className="text-[18px] font-medium">Contacts</p>
             </div>
             <div className="flex space-x-6">
-                <button className="border bg-black text-white rounded-full border-black font-medium px-10 py-4">Get Started</button>
+                <button className="border bg-black text-white rounded-full border-black font-medium px-10 py-4">Book a Demo</button>
             </div>
         </div>
     </section>

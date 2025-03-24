@@ -2,6 +2,9 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
 import { MdOutlineContentCopy } from "react-icons/md";
+import { BiBot } from "react-icons/bi";
+import { SiChatbot } from "react-icons/si";
+import { FaRegUser } from "react-icons/fa6";
 
 export default function Messages() {
     const messages = useSelector((state) => state.project.userMessages);
@@ -16,8 +19,12 @@ export default function Messages() {
     const messageItems = messages.map((msg, index) => (
         <div key={index} className={`flex w-full my-2 ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
             <div>
-                {msg.sender !== "user" && <p className="font-medium mb-3">HudumaVoice</p>}
-                {msg.sender === "user" && <p className="font-medium mb-3">You</p>}
+                <div className="flex space-x-2">
+                    {msg.sender !== "user" && <SiChatbot className="mt-[6px] text-blue-600"/>}
+                    {msg.sender === "user" && <FaRegUser className="mt-[5px] text-slate-600"/>}
+                    {msg.sender !== "user" && <p className="font-medium mb-3">HudumaVoice</p>}
+                    {msg.sender === "user" && <p className="font-medium mb-3">You</p>}
+                </div>
                 <div className={`border px-4 py-4 w-max space-x-4 flex ${msg.sender === "user" ? "bg-white border-slate-200 rounded-br-lg rounded-tl-lg" : "bg-[#0258F8] text-white rounded-bl-lg rounded-tr-lg"}`}>
                     <div className="flex flex-col">
                         <div className="flex space-x-4">

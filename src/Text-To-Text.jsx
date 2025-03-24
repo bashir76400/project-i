@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { projectActions } from "./store";
 import Messages from "./Message";
 import { FaStop } from "react-icons/fa6";
+import Header from "./Header";
 
 export default function TextToText() {
 
@@ -74,6 +75,7 @@ export default function TextToText() {
 
     return (
         <section className="flex flex-col w-full">
+            <Header/>
             {/* Display welcome message if no conversation exists */}
             {messages.length === 0 && (
                 <div className="h-[80vh] flex flex-col items-center justify-center">
