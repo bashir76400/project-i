@@ -18,17 +18,18 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
+import { SiChatbot } from "react-icons/si";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 import { useState } from "react"
 import google from './google.jpg'
 import { useNavigate } from "react-router";
-import { SiChatbot } from "react-icons/si";
+import talk from './talk.png'
+import bulb from './bulb.png'
 import Loader from "./Loader";
 
 
-export default function Login(){
+export default function CreateAccount(){
 
     const AUTH_URL = import.meta.env.VITE_API_URL;
 
@@ -58,15 +59,21 @@ export default function Login(){
     }
 
     const [enteredPhone, setInputPhone] = useState('');
+    const [isEmailFocused, setIsEmailFocused] = useState('');
+
     const [enteredPassword, setInputPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+    const [confirmPassword, setInputConfirmPassword] = useState('');
+    const [isConfirmPasswordFocused, setIsConfirmPasswordFocused] = useState(false);
 
     const [errorMsg, setErrorMsg] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     async function formSubmissionHandler(e){
         e.preventDefault();
 
-        if(enteredPhone.trim() === '' || enteredPassword.trim() === ''){
+        if(enteredPhone.trim() === '' || enteredPassword.trim() === '' || confirmPassword.trim() === ''){
             setErrorMsg('Kindly fill all the required fields')
 
             setTimeout(() => {
@@ -75,8 +82,9 @@ export default function Login(){
             return
         }
 
+
         if(enteredPassword.trim().length < 4){
-            setErrorMsg('Password must be a minimum of 8 characters')
+            setErrorMsg('Password must be a minimum of 4 characters')
             setTimeout(() => {
                 setErrorMsg('')
             },3000)
@@ -84,12 +92,13 @@ export default function Login(){
         }
 
         setIsLoading(true)
-        const response = await fetch(`${AUTH_URL}/login`, {
+        const response = await fetch(`${AUTH_URL}/create-user`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                fullName: enteredPhone,
                 phoneNumber: enteredPhone,
                 password: enteredPassword
             })
@@ -102,8 +111,7 @@ export default function Login(){
 
             setInputPhone('')
             setInputPassword('')
-
-            navigate('../dashboard')
+            navigate('../login')
         }else{
             const data = await response.json()
             console.log(data)
@@ -121,7 +129,7 @@ export default function Login(){
         <form className="w-[50%] h-[100vh] bg-white pl-44" onSubmit={formSubmissionHandler}>
             <p className="mt-20 text-[30px] font-bold">Huduma Voice</p>
             <p className="text-[18px] font-medium text-slate-600 mt-10">See your growth and get consulting support</p>
-            <button className="mt-10 border border-slate-300 flex justify-center w-[60%] space-x-3 px-4 py-4 rounded-full hover:cursor-pointer" type="button" onClick={continueWithGoogle}>
+            {/* <button className="mt-10 border border-slate-300 flex justify-center w-[60%] space-x-3 px-4 py-4 rounded-full hover:cursor-pointer" type="button" onClick={continueWithGoogle}>
                 <img src={google} alt="pic" className="h-8"/>
                 <p className="text-[18px] mt-[2px] font-medium">Sign In with Google</p>
             </button>
@@ -129,14 +137,16 @@ export default function Login(){
                 <hr className="text-slate-300 w-[32%] mt-3"/>
                 <p className="text-slate-600 font-medium">or Sign with Email</p>
                 <hr className="text-slate-300 w-[32%] mt-3"/>
-            </div>
+            </div> */}
             <div className="w-[60%] mt-8">
-                <p className="font-medium">Phone Number<span className="text-[#173DB3]">*</span></p>
+                <p className="font-medium">Phone <span className="text-[#173DB3]">*</span></p>
                 <input
                     value={enteredPhone}
                     onChange={(e) => setInputPhone(e.target.value)}
-                    className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 focus:outline-none focus:border-slate-400`}
-                    placeholder="e.g. 0712345678"
+                    onFocus={() => setIsEmailFocused(true)}
+                    onBlur={() => setIsEmailFocused(false)}
+                    className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 ${isEmailFocused ? 'outline-none border-slate-400' : ''}`}
+                    placeholder="e.g 0766347463"
                 />
             </div>
             <div className="w-[60%] mt-8">
@@ -144,29 +154,43 @@ export default function Login(){
                 <input
                     value={enteredPassword}
                     onChange={(e) => setInputPassword(e.target.value)}
-                    className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 focus:outline-none focus:border-slate-400`}
+                    onFocus={() => setIsPasswordFocused(true)}
+                    onBlur={() => setIsPasswordFocused(false)}
+                    className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 ${isPasswordFocused ? 'outline-none border-slate-400' : ''}`}
+                    placeholder="min.8 characters"
+                />
+            </div>
+            <div className="w-[60%] mt-8">
+                <p className="font-medium">Confirm Password <span className="text-[#173DB3]">*</span></p>
+                <input
+                    value={confirmPassword}
+                    onChange={(e) => setInputConfirmPassword(e.target.value)}
+                    onFocus={() => setIsConfirmPasswordFocused(true)}
+                    onBlur={() => setIsConfirmPasswordFocused(false)}
+                    className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 ${isConfirmPasswordFocused ? 'outline-none border-slate-400' : ''}`}
                     placeholder="min.8 characters"
                 />
             </div>
             <p className="w-[60%] text-end mt-6 font-medium text-[#173DB3]">Forget Password?</p>
              <div className="w-[60%] mt-8">
-                <button className="text-center border w-full py-4 rounded-full border-slate-300 font-medium hover:cursor-pointer bg-[#0258F8] text-white">Login</button>
+                <button className="text-center border w-full py-4 rounded-full border-slate-300 font-medium hover:cursor-pointer bg-[#0258F8] text-white">Create Account</button>
             </div>
             {isLoading && <div className="flex justify-center mt-4 w-[60%]">
                 <Loader/>
             </div>}
-            {errorMsg.trim().length !== 0 && <p className="mt-8 text-[16px] font-medium text-red-500 text-center w-[60%]">{errorMsg}</p>}
+            {errorMsg.trim().length !== 0 && <p className="mt-8 text-[14px] text-red-500">{errorMsg}</p>}
             <div className="flex mt-10 space-x-4 font-medium">
-                <p>Not registered yet?</p>
-                <button className="text-[#173DB3]" type="button" onClick={() => navigate('../createaccount')}>Create An Account</button>
+                <p>Already have an account?</p>
+                <button className="text-[#173DB3]" type="button" onClick={() => navigate('../login')}>Sign In</button>
             </div>
         </form>
-        <div className="w-[50%] text-white">
-            <div className="flex flex-col items-center mt-96 uppercase text-[20px]">
-                <SiChatbot size={60} className="mb-10"/>
-                <p>LEGISLATIVE</p>
-                <p>INTELLIGENCE</p>
+        <div className="w-[50%]">
+            <div className="flex justify-between mt-40 w-[88%]">
+                <SiChatbot className="ml-24 mb-20 text-white" size={30}/>
+                <img src={bulb} alt="pic" className="h-10"/>
             </div>
+            <p className="w-[80%] mx-auto leading-8 font-medium text-[18px] text-white">Welcome to your AI-powered multilingual assistant! Our intelligent chatbot understands and communicates in multiple languages, making conversations effortless and natural. Whether you're chatting, translating, or seeking information, our AI ensures accuracy, clarity, and cultural relevance.Create your account today and unlock a world of seamless multilingual communication anytime, anywhere!</p>
+            <img src={talk} alt="pic" className="ml-24 mt-20"/>
         </div>
     </section>
 }
