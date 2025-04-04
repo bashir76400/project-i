@@ -103,7 +103,7 @@ export default function Login(){
             setInputPhone('')
             setInputPassword('')
 
-            navigate('../dashboard')
+            navigate('../text-to-text')
         }else{
             const data = await response.json()
             console.log(data)
