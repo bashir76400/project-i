@@ -17,7 +17,7 @@ export default function TextToText() {
     const isLoading = useSelector(state => state.project.isLoading)
 
 
-    const RESPONSE_URL = 'https://project-k0uxxhr2f-raven-mulis-projects.vercel.app/response';
+    const RESPONSE_URL = 'https://project-3yywvauzx-raven-mulis-projects.vercel.app/response';
 
     // Function to format time as "12:30 PM"
     function getFormattedTime() {

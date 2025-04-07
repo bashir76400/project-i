@@ -31,7 +31,7 @@ export default function Messages() {
                             <p>{msg.msg}</p>
                             <p className="text-[13px] mt-2 opacity-70 text-right">{msg.time}</p>
                         </div>
-                        {msg.sender !== "user" && <div className="flex justify-end mt-2 hover:cursor-pointer">
+                        {msg.sender !== "user" && <div className="flex justify-end mt-2 hover:cursor-pointer">l
                             <div className="bg-[#337CF7] px-4 py-1 rounded-full flex">
                                 <MdOutlineContentCopy className="mt-1 mr-1"/>
                                 <p>Copy</p>
