@@ -2,9 +2,9 @@ import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import Loader from "./Loader";
 import { MdOutlineContentCopy } from "react-icons/md";
-import { BiBot } from "react-icons/bi";
 import { SiChatbot } from "react-icons/si";
 import { FaRegUser } from "react-icons/fa6";
+import ChatBotResponse from "./ChatBotResponse";
 
 export default function Messages() {
     const messages = useSelector((state) => state.project.userMessages);
@@ -28,15 +28,9 @@ export default function Messages() {
                 <div className={`border px-4 py-4 w-max space-x-4 flex ${msg.sender === "user" ? "bg-white border-slate-200 rounded-br-lg rounded-tl-lg" : "bg-[#0258F8] text-white rounded-bl-lg rounded-tr-lg"}`}>
                     <div className="flex flex-col">
                         <div className="flex space-x-4">
-                            <p>{msg.msg}</p>
+                            {msg.sender === "user"? <p>{msg.msg}</p> : <ChatBotResponse text={msg.msg} />}
                             <p className="text-[13px] mt-2 opacity-70 text-right">{msg.time}</p>
                         </div>
-                        {msg.sender !== "user" && <div className="flex justify-end mt-2 hover:cursor-pointer">l
-                            <div className="bg-[#337CF7] px-4 py-1 rounded-full flex">
-                                <MdOutlineContentCopy className="mt-1 mr-1"/>
-                                <p>Copy</p>
-                            </div>
-                        </div>}
                     </div>
                 </div>
             </div>

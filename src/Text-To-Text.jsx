@@ -8,6 +8,8 @@ import Header from "./Header";
 
 export default function TextToText() {
 
+    const CHAT_URL = 'https://raven-o5e67whev-raven-mulis-projects.vercel.app/chat'
+
     const messages = useSelector(state => state.project.userMessages);
     const dispatch = useDispatch();
 
@@ -15,9 +17,6 @@ export default function TextToText() {
     const [textIsFocused, setTextIsFocused] = useState(false);
 
     const isLoading = useSelector(state => state.project.isLoading)
-
-
-    const RESPONSE_URL = 'https://project-3yywvauzx-raven-mulis-projects.vercel.app/response';
 
     // Function to format time as "12:30 PM"
     function getFormattedTime() {
@@ -32,8 +31,12 @@ export default function TextToText() {
 
 
     async function getResponseURL(){
-        const response = await fetch(RESPONSE_URL, {
+        const response = await fetch(CHAT_URL, {
             method : 'POST',
+            body: JSON.stringify({
+                userId : "4876873648",
+                message: text
+            }),
             headers : {
                 'Content-Type' : 'application/json'
             }
@@ -41,13 +44,18 @@ export default function TextToText() {
 
         if(response.ok){
             const data = await response.json();
-            dispatch(projectActions.addMessagesHandler({
-                text: data.text,
-                time: getFormattedTime(),
-                sender: data.sender,
-                isLoading : false
-            }));
-            console.log(`Data : ${data}`)
+            console.log(data.messages[1].sender)
+
+            if(data.messages[1].sender === "assistant"){
+                dispatch(projectActions.addMessagesHandler({
+                    text: data.messages[1].message,
+                    time: getFormattedTime(),
+                    sender: data.messages[1].sender,
+                    isLoading : false
+                }));
+
+                console.log(`Data : ${data.messages}`)
+            }
         }else{
             const data = await response.json();
             console.log(`Data : ${data}`)
@@ -78,11 +86,11 @@ export default function TextToText() {
             <Header/>
             {/* Display welcome message if no conversation exists */}
             {messages.length === 0 && (
-                <div className="h-[80vh] flex flex-col items-center justify-center">
+                <div className="h-[70vh] flex flex-col items-center justify-center">
                     <p className="text-[24px] font-medium text-center">
                         Seamlessly Communicate Across Languages with AI.
                     </p>
-                    <p className="text-center mt-4 leading-7">
+                    <p className="text-center mt-4 w-[60%] leading-7">
                         Break language barriers effortlessly. Our advanced AI understands, translates, and
                         generates text in multiple languages with high accuracy, making global communication smoother than ever.
                     </p>
@@ -91,6 +99,8 @@ export default function TextToText() {
 
             {/* Display Messages if available */}
             {messages.length > 0 && <Messages />}
+
+            {/* <ChatBotResponse text={reply} /> */}
 
             {/* Message Input Section */}
             <div className="flex items-center space-x-4 p-4 w-[50%] mx-auto">

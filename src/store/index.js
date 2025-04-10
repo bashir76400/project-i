@@ -5,8 +5,13 @@ const projectSlice = createSlice({
     initialState: {
         userMessages: [],
         isLoading : false,
+        language : ""
     },
     reducers: {
+        addLanguageHandler: (state, action) => {
+            const language = action.payload;
+            state.language = language
+        },
         addMessagesHandler: (state, action) => {
             const { text, time, sender, isLoading } = action.payload;
 

@@ -91,6 +91,28 @@ export default function CreateAccount(){
             return
         }
 
+        const isLocalNumber = /^(07\d{8}|01\d{8})$/.test(enteredPhone);
+        const isInternationalNumber = /^\+2547\d{8}$/.test(enteredPhone);
+    
+        if (enteredPhone.trim().length >= 10) {
+            console.log(isLocalNumber)
+            console.log(isInternationalNumber)
+            if ((isLocalNumber === false) && (isInternationalNumber === false)) {
+                setErrorMsg('Invalid Kenyan number format. Must start with 07, 01, or +2547 and be 10 or 13 digits long.');
+
+                setTimeout(() => {
+                    setErrorMsg('')
+                },3000)
+                return
+            }
+        }else{
+            setErrorMsg('Number is less than 10 digits');
+            setTimeout(() => {
+                setErrorMsg('')
+            },3000)
+            return
+        }
+
         setIsLoading(true)
         const response = await fetch(`${AUTH_URL}/create-user`, {
             method: 'POST',
@@ -152,27 +174,32 @@ export default function CreateAccount(){
             <div className="w-[60%] mt-8">
                 <p className="font-medium">Password <span className="text-[#173DB3]">*</span></p>
                 <input
+                    type="password"
+                    autoComplete="on"
+                    minLength={4}
                     value={enteredPassword}
                     onChange={(e) => setInputPassword(e.target.value)}
                     onFocus={() => setIsPasswordFocused(true)}
                     onBlur={() => setIsPasswordFocused(false)}
                     className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 ${isPasswordFocused ? 'outline-none border-slate-400' : ''}`}
-                    placeholder="min.8 characters"
+                    placeholder="min.4 characters"
                 />
             </div>
             <div className="w-[60%] mt-8">
                 <p className="font-medium">Confirm Password <span className="text-[#173DB3]">*</span></p>
                 <input
+                    type="password"
+                    autoComplete="on"
+                    minLength={4}
                     value={confirmPassword}
                     onChange={(e) => setInputConfirmPassword(e.target.value)}
                     onFocus={() => setIsConfirmPasswordFocused(true)}
                     onBlur={() => setIsConfirmPasswordFocused(false)}
                     className={`border border-slate-300 px-6 py-4 rounded-full w-full mt-4 ${isConfirmPasswordFocused ? 'outline-none border-slate-400' : ''}`}
-                    placeholder="min.8 characters"
+                    placeholder="min.4 characters"
                 />
             </div>
-            <p className="w-[60%] text-end mt-6 font-medium text-[#173DB3]">Forget Password?</p>
-             <div className="w-[60%] mt-8">
+             <div className="w-[60%] mt-12">
                 <button className="text-center border w-full py-4 rounded-full border-slate-300 font-medium hover:cursor-pointer bg-[#0258F8] text-white">Create Account</button>
             </div>
             {isLoading && <div className="flex justify-center mt-4 w-[60%]">
